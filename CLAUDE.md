@@ -180,10 +180,27 @@ Run each command and confirm the expected output before checking the box:
         section in `docs/API.md`) for the rationale. Document any **new** CVEs as they
         appear; do not blanket-ignore.
 
-**Gate 5 — Smoke Test Execution**
-- Write smoke test plan for the PR scope
-- Execute (live API or mock verification) — no user confirmation required
-- Report pass/fail per test case explicitly
+**Gate 5 — Usability Smoke Test (live hardware, user walk-through)**
+
+1. **Identify re-run candidates** — read `.claude/internal/INTEGRATION_TEST_PLAN.md` and
+   collect every test whose `Status` is `FAIL` or `BLOCKED(#NNN)` where `#NNN` is one of
+   the issues closed by this PR.
+2. **Execute each test** using the live MCP tools against real devices.
+3. **Present results one at a time** in this format — no raw JSON, no tool call names:
+
+   ```
+   ### Test N — [Test ID]: [one-line description]
+   **User query:** "..."
+   **Agent says:** "..."   ← the plain-English response the grower would see
+   ```
+
+4. **Wait for explicit user pass/fail** on each test before showing the next.
+5. **On FAIL** — open a new GitHub issue immediately, update the test plan status, then
+   continue to the next test.
+6. **Do not ask the user to merge the PR until all re-run candidates have been walked
+   through and the user has given a verdict on each one.**
+
+Gate 5 is the only gate where the user must be present. All other gates run unattended.
 
 **Failure at any gate → fix → restart from Gate 1.**
 
