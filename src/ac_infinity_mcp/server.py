@@ -2688,6 +2688,10 @@ async def create_advance_automation(
     Returns:
         JSON with action, name, port, port_name, on_speed, begin_time, end_time,
         dry_run, sent, note. On failure returns ``{"error": "..."}``.
+        When the specified port does not exist on the device, returns
+        ``{"error": "Port N not found on device X", "available_ports": [{"port": N,
+        "name": "..."}], "suggested_reply": "..."}``. Port names absent or empty in
+        the API response fall back to "Port N"; control chars are sanitized.
     """
     try:
         # Validate original name before sanitizing so empty input produces an error

@@ -1810,16 +1810,33 @@ Create a new Advance Automation. The automation is enabled immediately after cre
 {
   "action": "create",
   "name": "Night Mode",
+  "port": 3,
+  "port_name": "Intake Fan",
   "on_speed": 3,
   "off_speed": 0,
-  "begin_time": 1320,
-  "end_time": 360,
+  "begin_time": "22:00",
+  "end_time": "06:00",
   "dry_run": true,
-  "sent": false
+  "sent": false,
+  "note": "Creating automations directly isn't possible through this assistant — the AC Infinity app handles that."
 }
 ```
 
-**Response (live):** Same plus `"automation_id"` (server-assigned `advId`).
+**Response (live):** Same shape plus `"automation_id"` (server-assigned `advId`); `"dry_run": false`, `"sent": true`.
+
+**Response (port not found on device):**
+```json
+{
+  "error": "Port 5 not found on device C58ZA",
+  "available_ports": [
+    {"port": 1, "name": "Intake Fan"},
+    {"port": 2, "name": "Exhaust Fan"}
+  ],
+  "suggested_reply": "Port 5 isn't in use on this device. Let me show you what's connected."
+}
+```
+
+**Port name fallback:** When a port's `portName` field is absent or empty in the API response, the `name` field in `available_ports` falls back to `"Port N"` (e.g., `"Port 3"`). Control characters in `portName` values are sanitized via `_sanitize_api_string` before inclusion.
 
 **Validation:** `on_speed` 1–10; `off_speed` 0–10; `begin_time` ≤ `end_time` unless both are 255.
 
