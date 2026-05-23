@@ -180,10 +180,9 @@ Run each command and confirm the expected output before checking the box:
         section in `docs/API.md`) for the rationale. Document any **new** CVEs as they
         appear; do not blanket-ignore.
 
-**Gate 5 — Manual Smoke Test Proposal + Execution**
+**Gate 5 — Smoke Test Execution**
 - Write smoke test plan for the PR scope
-- Present plan to user for confirmation before executing
-- Execute (live API or mock verification)
+- Execute (live API or mock verification) — no user confirmation required
 - Report pass/fail per test case explicitly
 
 **Failure at any gate → fix → restart from Gate 1.**
